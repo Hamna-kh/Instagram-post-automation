@@ -1,0 +1,1411 @@
+{
+  "name": "AI Instagram News Automation (9AM & 2PM)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9,14 * * *"
+            }
+          ]
+        }
+      },
+      "id": "f407cbb3-c76f-4ae6-b97c-492c38703a9a",
+      "name": "Schedule Trigger (9AM & 2PM)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c1000000-0000-4000-8000-000000000001",
+              "name": "postingSlot",
+              "value": "={{ $now.toFormat('yyyy-MM-dd') }}-{{ $now.hour < 12 ? '9AM' : '2PM' }}",
+              "type": "string"
+            },
+            {
+              "id": "c1000000-0000-4000-8000-000000000002",
+              "name": "approvalEmail",
+              "value": "hamnakhalid398@gmail.com",
+              "type": "string"
+            },
+            {
+              "id": "c1000000-0000-4000-8000-000000000003",
+              "name": "errorEmail",
+              "value": "hamnakhalid398@gmail.com",
+              "type": "string"
+            },
+            {
+              "id": "c1000000-0000-4000-8000-000000000004",
+              "name": "igUserId",
+              "value": "17841453105793862",
+              "type": "string"
+            },
+            {
+              "id": "c1000000-0000-4000-8000-000000000005",
+              "name": "igAccessToken",
+              "value": "IGAAaGFuPjyYVBZAFpCbVNQem1uTlNTMTg1RnpBelZA1dmN4NUs2TVhVdTctd3A3aGhYYm5qN0EwaUVtZADRiLUJMczhHeEJCbUwwdmZAkODJtRWI4aTJWWlVJekIwQWtVTFNfSUgtR0NhVnRSb21Qdm5wbWJfN05SNXRqNTUyRWxKRQZDZD",
+              "type": "string"
+            },
+            {
+              "id": "eaf35fba-aecb-4564-aab6-07f059db040a",
+              "name": "unsplashKey",
+              "value": "aGi9BnE1mGh00ZMCk-mm7u5GgIuDwiWg35nX1hH4hTk",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "15a69d48-0ee3-4e78-9122-6716c9d2fbf7",
+      "name": "Config & Posting Slot",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        144,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+        "options": {}
+      },
+      "id": "8c946658-fd6d-4721-81d9-c1d3037ecf30",
+      "name": "RSS - TechCrunch AI",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        224
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.theverge.com/rss/index.xml",
+        "options": {}
+      },
+      "id": "7bd44e78-faf4-4cbd-8ab3-8b6e5754f691",
+      "name": "RSS - The Verge",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        384
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://www.technologyreview.com/feed/",
+        "options": {}
+      },
+      "id": "80f4dfb3-efa5-44e8-98ff-6e296500d201",
+      "name": "RSS - MIT Technology Review",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        544
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://openai.com/news/rss.xml",
+        "options": {}
+      },
+      "id": "0ff35ca7-bed0-49e8-b3d2-d039d6503d09",
+      "name": "RSS - OpenAI Blog",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        704
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://blog.google/technology/ai/rss/",
+        "options": {}
+      },
+      "id": "e1179856-bae5-47bf-948c-24419ecafa72",
+      "name": "RSS - Google AI Blog",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        864
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "id": "aa10c94b-1ef2-4d5a-89e8-f268f79a0613",
+      "name": "Combine All Feeds",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        752,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d1000000-0000-4000-8000-000000000001",
+              "leftValue": "={{ $json.isoDate }}",
+              "rightValue": "={{ $now.minus({ hours: 24 }).toISO() }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "73d7eba7-d472-4dc6-9e15-012296aeca8c",
+      "name": "Only Last 24 Hours",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "compare": "selectedFields",
+        "fieldsToCompare": "link",
+        "options": {}
+      },
+      "id": "1d07968b-7042-4dbf-a3e1-706ac6bad886",
+      "name": "Remove Duplicate Stories",
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8",
+          "mode": "list",
+          "cachedResultName": "Insta Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "id": "be9a8df5-5597-4ced-a9d2-b5e22e8a8880",
+      "name": "Read Published Posts (Google Sheets)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        864,
+        880
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XNMActrjPXjve9Wt",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "link",
+        "joinMode": "keepNonMatches",
+        "outputDataFrom": "input1",
+        "options": {}
+      },
+      "id": "141681fa-cc0f-4bf8-8618-66fffb5a506a",
+      "name": "Exclude Already Published",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1424,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "isoDate",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cd5e65a8-832a-474b-9757-785273bdd17f",
+      "name": "Newest First",
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        1648,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "maxItems": 15
+      },
+      "id": "553b8fd2-1a79-412f-a856-53f99e730a89",
+      "name": "Limit to 15 Stories",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1872,
+        672
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "stories",
+        "include": "specifiedFields",
+        "fieldsToInclude": "title,link,contentSnippet,isoDate",
+        "options": {}
+      },
+      "id": "ca352207-2a22-489f-abce-798380defd28",
+      "name": "Bundle Stories",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a professional tech-news editor, fact-checker, and Instagram content strategist. Your goal is to turn relevant technology news into engaging, useful Instagram posts that help general public, students, freelancers, and small business owners understand how technology affects their lives, work, skills, and opportunities.\n\n## 1. AVAILABLE NEWS STORIES\n\nHere are the news stories (JSON) published in the last 24 hours:\n\n{{ JSON.stringify($json.stories) }}\n\n## 2. RECENTLY PUBLISHED TOPICS — AVOID DUPLICATES\n\nTopics already posted recently (JSON list of titles):\n\n{{ JSON.stringify([...$('Read Published Posts (Google Sheets)').all().map(i => i.json.title).filter(Boolean).slice(-30), ...(() => { const t = []; for (let r = 0; r < 10; r++) { try { t.push($('Prepare Post Data').all(0, r)[0].json.story_title); } catch (e) { break; } } return t; })()]) }}\n\nDo not select a story about the same event, product launch, announcement, research finding, company development, or underlying topic as any title in the list above, even if the new story comes from another publication or uses different wording.\n\nCompare the actual meaning and subject of each story, not just its title. Prefer a genuinely different topic. If a story is only a follow-up to an already-covered event without a meaningful new development, treat it as a duplicate.\n\n## 3. SELECT THE BEST STORY\n\nReview all available stories and select exactly ONE.\n\nPrioritize stories that:\n\n- Explain a meaningful development in AI, automation, software, technology tools, cybersecurity, digital business, startups, or the future of work.\n- How new technology will change a General public lives.(either towads good or bad)\n- Offer practical value to students, freelancers, or small business owners.\n- Reveal a useful opportunity, important change, new capability, limitation, risk, or lesson.\n- Can be explained clearly to someone who is not a technology expert.\n- Have a credible source and enough factual information to support an accurate post.\n- Are timely, specific, and interesting enough to encourage genuine discussion.\n\nPrefer stories with a clear real-world consequence over routine product updates, generic tech announcements, speculation, or minor news.\n\nWhen comparing stories, ask:\n\n1. Who would benefit from knowing this?\n2. What can they do differently because of it?\n3. Why does this matter now?\n4. Is the story genuinely different from recently published content?\n5. Can I explain its value without exaggerating?\n\nChoose the story with the strongest combination of relevance, usefulness, novelty, credibility, and engagement potential. Do not automatically choose the most sensational headline or the most famous company.\n\nIf no story meets these standards, set `suitable` to `false` and leave every other field empty using the correct data type.\n\n## 4. THE EDITORIAL ANGLE: \"WHAT THIS MEANS FOR YOU\"\n\nDo not merely summarize the news. Explain its practical implications.\n\nConnect the development to at least one relevant audience:\n\n- **Students:** learning, career preparation, in-demand skills, productivity, education, or future job opportunities.\n- **Freelancers:** service offerings, client work, productivity, competition, pricing opportunities, or new ways to earn.\n- **Small business owners:** customer experience, marketing, operations, costs, automation, efficiency, or business growth.\n- **General Public:** everyday life, personal finances, health and safety, digital services, consumer rights, daily convenience, or how the development affects ordinary people's lives.\n\n\n\nChoose the audience that genuinely benefits most from the story. Do not force the news to apply to everyone.\n\nMake the takeaway specific. Instead of saying \"AI is changing the future,\" explain what the reader should understand, reconsider, try, or watch out for.\n\nIf the story presents a risk or limitation rather than an opportunity, explain that honestly. Not every development needs to be portrayed as positive.\n\n## 5. CREATE AN ATTENTION-GRABBING HOOK\n\nThe opening line is critical. Write a short, compelling hook that makes the target reader want to continue.\n\nGood hook approaches include:\n\n- A surprising but factually supported implication.\n- A practical problem the news could help solve.\n- A relevant question about work, skills, business, or technology.\n- A misconception the story challenges.\n- A specific opportunity or risk that readers may overlook.\n\nHook requirements:\n\n- Make the relevance clear immediately.\n- Create curiosity without hiding the actual subject.\n- Use natural, conversational language.\n- Keep it concise and easy to understand.\n- Base it on the story, not invented statistics or assumptions.\n\nAvoid generic openings such as \"Big news!\", \"Technology is evolving!\", \"You won't believe this!\", or \"The future is here.\"\n\nNever use clickbait, fearmongering, exaggerated promises, or misleading claims.\n\n## 6. WRITE AN ENGAGING INSTAGRAM CAPTION\n\nStructure the caption as follows:\n\n**Opening hook:** One compelling first line.\n\n**The news:** Explain what actually happened in one or two short sentences. Mention the relevant company, tool, product, research, or development when appropriate.\n\n**What this means for you:** Explain the real-world impact for the selected audience. Be specific and practical.\n\n**Actionable takeaway:** Give the reader one realistic action, useful question to consider, or next step. Do not invent capabilities or imply that an opportunity is guaranteed.\n\n**Conversation starter:** End with one natural, relevant question that invites readers to share experiences, opinions, or challenges.\n\nCaption writing rules:\n\n- Write for Instagram, not like a formal news article.\n- Use simple, clear English that an international audience can understand.\n- Prefer short paragraphs, with whitespace for mobile readability.\n- Be informative, human, confident, and conversational.\n- Use a few relevant emojis only when they improve readability.\n- Avoid unnecessary technical jargon; explain essential terms briefly.\n- Avoid repetitive statements, filler, corporate language, and generic motivational advice.\n- Do not repeat the same point in different words.\n- Keep the caption concise, ideally around 100–180 words, unless the story genuinely requires less or slightly more.\n- Make the post useful even to someone who has not read the original article.\n\n## 7. ENCOURAGE GENUINE ENGAGEMENT\n\nOptimize for meaningful engagement, not empty engagement bait.\n\n- Make readers feel that the information is relevant to their studies, work, or business.\n- Give them something useful to learn, discuss, save, or share.\n- End with ONE specific question directly connected to the news.\n- Prefer questions that are easy to answer from personal experience or a reasonable opinion.\n- Encourage discussion without pressuring people to comment, follow, or share.\n- Never ask multiple generic questions or use phrases such as \"Comment YES,\" \"Tag three friends,\" or \"Agree or disagree?\" unless genuinely appropriate to the topic.\n\nThe goal is to make people think: \"This is useful to me, and I have something to say about it.\"\n\n## 8. HASHTAGS AND DISCOVERABILITY\n\nGenerate 5–8 relevant hashtags, if your existing output schema includes a hashtags field.\n\nUse a balanced mix of:\n\n- Specific topic or technology hashtags.\n- Relevant industry hashtags.\n- Audience or practical-use hashtags.\n\nUse hashtags that accurately describe the story and its audience. Avoid unrelated trending hashtags, excessive generic tags, keyword stuffing, and repeated variations of the same hashtag.\n\n## 9. FACT-CHECKING AND EDITORIAL INTEGRITY\n\nAccuracy is more important than virality.\n\n- Use only information supported by the provided stories.\n- Never invent facts, statistics, dates, quotes, product features, pricing, study results, or company announcements.\n- Do not turn predictions, rumors, proposals, or reported possibilities into confirmed facts.\n- Distinguish what the source reports from your own reasonable interpretation of its implications.\n- Do not claim that a tool is free, available to everyone, or commercially usable unless the supplied information supports that claim.\n- Do not promise income, employment, business growth, or guaranteed productivity improvements.\n- Avoid presenting AI as a replacement for every job or business function.\n- If important details are unclear or contradictory, choose a better-supported story.\n- Preserve the original context and avoid misleading simplifications.\n\nIf source information is insufficient to create a useful, trustworthy post, reject that story rather than filling gaps with assumptions.\n\n## 10. FINAL QUALITY CHECK\n\nBefore returning your result, silently verify:\n\n1. Is the selected story within the provided news collection and relevant to the last-24-hours input?\n2. Is it genuinely different from all recently published topics?\n3. Is it useful to at least one intended audience?\n4. Does the hook create curiosity without misleading the reader?\n5. Does the caption explain the practical implications rather than merely summarize the news?\n6. Is the takeaway specific and realistic?\n7. Does the final question encourage meaningful conversation?\n8. Are all factual claims supported?\n9. Is the content concise, readable, and appropriate for Instagram?\n10. Does the output match the configured output schema exactly?\n\nRevise the content if any requirement is not met.\n\n## 10b. EXTRA FIELDS USED TO DESIGN THE POST IMAGE\n\n- `category`: one or two words, e.g. AI, TECH, STARTUPS, SECURITY, WORK, MONEY.\n- `image_query`: 2-3 plain English words describing a generic stock photo that fits the story's theme (e.g. \"robot hand laptop\", \"data center\"). Never use brand names, people's names, or logos.\n- `takeaway`: ONE sentence, max 18 words, stating what this means for the reader.\n- `before` and `after`: only when the story is a clear change from an old way to a new way (max 12 words each). Otherwise empty strings.\n\n## 11. OUTPUT RULES\n\n- Return exactly ONE selected story and its completed post.\n- Follow the exact field names, data types, and structure required by the existing output parser or workflow.\n- Do not add, remove, or rename output fields.\n- Return only valid JSON if JSON is required by the configured output parser.\n- Do not include Markdown fences, explanations, notes, or commentary outside the required output.\n- When no suitable story exists, set `suitable` to `false`, use empty strings for string fields and empty arrays for array fields, and preserve all required fields.\n- Never mark an unsuitable story as suitable merely to ensure that a post gets published.\n",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a social media editor for an Instagram page covering AI, technology news, automation, and digital developments. Your goal is to turn timely tech news into engaging, accurate, easy-to-understand posts that explain what the news means for ordinary people, students, freelancers, and small business owners.\n\nRULES:\n\n**1. Accuracy and source integrity**\n\n- Use ONLY the information provided in the selected story's title and content snippet. Do NOT invent facts, numbers, quotes, prices, dates, capabilities, or features.\n- You may explain reasonable real-world implications, but clearly distinguish implications from confirmed facts.\n- If the provided text does not contain enough information to write 3 accurate points, choose a different story or set `suitable` to `false`.\n- Copy `story_url` and `story_title` exactly from the chosen story.\n- Derive `source_name` from the publication or organization identified by the story's URL domain. Use a recognizable publication name where possible; do not guess if it cannot be identified reliably.\n\n**2. Story selection and audience relevance**\n\n- Select only ONE story that offers genuine value to at least one of these audiences:\n  - General public: everyday life, privacy, safety, consumer rights, digital services, personal finances, convenience, or other real-world effects.\n  - Students: education, learning, career preparation, skills, and job opportunities.\n  - Freelancers: client work, productivity, services, competition, and earning opportunities.\n  - Small business owners: marketing, customer experience, operations, costs, efficiency, and growth.\n- Explain what the development means for the relevant audience, whether the impact is positive, negative, or mixed.\n- Do not force every story to be relevant to every audience.\n- If every remaining story covers the same event or substantially the same topic as an already-published title, set `suitable` to `false` instead of repeating it.\n- Prefer genuinely useful developments over sensational headlines, routine announcements, or speculation.\n\n**3. Headline**\n\n- Write a compelling, curiosity-driven hook of no more than 10 words.\n- Make the relevance or consequence clear.\n- Avoid generic openings, misleading clickbait, fearmongering, and unsupported claims.\n\n**4. Points**\n\n- Generate 3–7 concise points, with a maximum of 40 words per point.\n- Explain the news and its practical implications for the relevant audience.\n- Make the points specific, useful, and easy for non-technical readers to understand.\n- Avoid repeating the same idea in different words.\n- Do not present speculation or possible future effects as established facts.\n\n**5. Caption**\n\n- Write an engaging Instagram caption WITHOUT hashtags.\n- Start with the exact hook used in `headline`.\n- Briefly explain the development, why it matters, and what readers can learn, do, or watch out for.\n- Use simple, friendly, conversational English and short paragraphs.\n- Make the post understandable to ordinary people without a technical background.\n- End with one relevant, natural question that encourages genuine discussion, followed by the CTA.\n- Avoid generic filler, excessive emojis, repetitive explanations, and exaggerated promises.\n\n**6. Call to action**\n\n- Provide one short, relevant CTA in `cta`.\n- Encourage a meaningful next step, such as following for useful tech updates or sharing an opinion.\n- Keep the CTA natural and consistent with the page's purpose.\n- Avoid engagement bait such as \"Comment YES\" or \"Tag three friends.\"\n\n**7. Hashtags**\n\n- Generate 5–10 relevant hashtags, each beginning with `#`.\n- Mix specific technology or news-topic hashtags with relevant audience or industry hashtags.\n- Do not use unrelated trending hashtags or repetitive variations.\n\n**8. Final output**\n\n- Return exactly ONE selected story and follow the existing output schema precisely.\n- Preserve all required field names and data types. Do not add or rename fields.\n- `headline`: maximum 10 words.\n- `points`: 3–7 points, maximum 40 words each.\n- `caption`: engaging caption without hashtags, starting with the headline and ending with a relevant question followed by the CTA.\n- `cta`: one short call to action.\n- `hashtags`: 5–10 hashtags.\n- `story_url` and `story_title`: exact values from the selected story.\n- `source_name`: recognizable publication or organization name derived from the source domain.\n- If no suitable story exists, set `suitable` to `false` and use empty strings for string fields and empty arrays for array fields, preserving the existing schema.\n- Return only valid JSON when required by the output parser. Do not include explanations or Markdown fences.\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "920320f7-a1aa-4353-95c3-13b4fb0a15fd",
+      "name": "AI - Select Story & Write Post",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        0,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\"type\":\"object\",\"properties\":{\"suitable\":{\"type\":\"boolean\"},\"story_title\":{\"type\":\"string\"},\"story_url\":{\"type\":\"string\"},\"source_name\":{\"type\":\"string\"},\"headline\":{\"type\":\"string\"},\"points\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"cta\":{\"type\":\"string\"},\"hashtags\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"caption\":{\"type\":\"string\"},\"category\":{\"type\":\"string\"},\"image_query\":{\"type\":\"string\"},\"takeaway\":{\"type\":\"string\"},\"before\":{\"type\":\"string\"},\"after\":{\"type\":\"string\"}},\"required\":[\"suitable\",\"story_title\",\"story_url\",\"source_name\",\"headline\",\"points\",\"cta\",\"hashtags\",\"caption\",\"category\",\"image_query\",\"takeaway\",\"before\",\"after\"]}"
+      },
+      "id": "7ca93c6a-be60-429f-a803-0c73c89d1f69",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        1568
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e1000000-0000-4000-8000-000000000001",
+              "name": "suitable",
+              "value": "={{ $json.output.suitable }}",
+              "type": "boolean"
+            },
+            {
+              "id": "e1000000-0000-4000-8000-000000000002",
+              "name": "headline",
+              "value": "={{ $json.output.headline }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0000-4000-8000-000000000003",
+              "name": "pointsText",
+              "value": "={{ $json.output.points.join('\\n') }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0000-4000-8000-000000000004",
+              "name": "cta",
+              "value": "={{ $json.output.cta }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0000-4000-8000-000000000005",
+              "name": "story_title",
+              "value": "={{ $json.output.story_title }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0000-4000-8000-000000000006",
+              "name": "story_url",
+              "value": "={{ $json.output.story_url }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0000-4000-8000-000000000007",
+              "name": "source_name",
+              "value": "={{ $json.output.source_name }}",
+              "type": "string"
+            },
+            {
+              "id": "e1000000-0000-4000-8000-000000000008",
+              "name": "caption",
+              "value": "={{ $json.output.caption }}\n\n{{ $json.output.hashtags.join(' ') }}\n\nSource: {{ $json.output.source_name }}",
+              "type": "string"
+            },
+            {
+              "id": "4ca2fdc0-bc0d-4c2b-aaa9-b9d46088d5e6",
+              "name": "category",
+              "value": "={{ $json.output.category ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "b5abf9ef-1658-4df5-9fe7-9c9ad0f9974a",
+              "name": "image_query",
+              "value": "={{ $json.output.image_query ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "efd76fe7-8e6f-4b90-aab1-ec18a0ca1ec0",
+              "name": "takeaway",
+              "value": "={{ $json.output.takeway ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "423a7361-23cd-4933-9a18-a57efae139eb",
+              "name": "before",
+              "value": "={{ $json.output.before ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "28261037-224b-4097-ae88-d1118f42fd0f",
+              "name": "after",
+              "value": "={{ $json.output.after ?? '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b84750d5-a4d3-48e2-8bf0-6c01acbc5a2d",
+      "name": "Prepare Post Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f1000000-0000-4000-8000-000000000001",
+              "leftValue": "={{ $json.suitable }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b40c6c62-0d13-4f8a-92f8-6ca4c5de8637",
+      "name": "Suitable Story Found?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        544,
+        1360
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "b3cc0000-160a-447c-ac69-b19f138e8fa7",
+      "name": "Stop - No Suitable Story",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        768,
+        1648
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a2000000-0000-4000-8000-000000000001",
+              "name": "imageUrl",
+              "value": "={{ $json.url }}.jpg",
+              "type": "string"
+            },
+            {
+              "id": "a2000000-0000-4000-8000-000000000002",
+              "name": "headline",
+              "value": "={{ $('Prepare Post Data').first().json.headline }}",
+              "type": "string"
+            },
+            {
+              "id": "a2000000-0000-4000-8000-000000000003",
+              "name": "caption",
+              "value": "={{ $('Prepare Post Data').first().json.caption }}",
+              "type": "string"
+            },
+            {
+              "id": "a2000000-0000-4000-8000-000000000004",
+              "name": "story_title",
+              "value": "={{ $('Prepare Post Data').first().json.story_title }}",
+              "type": "string"
+            },
+            {
+              "id": "a2000000-0000-4000-8000-000000000005",
+              "name": "story_url",
+              "value": "={{ $('Prepare Post Data').first().json.story_url }}",
+              "type": "string"
+            },
+            {
+              "id": "a2000000-0000-4000-8000-000000000006",
+              "name": "source_name",
+              "value": "={{ $('Prepare Post Data').first().json.source_name }}",
+              "type": "string"
+            },
+            {
+              "id": "ef5c9871-554a-4fd4-9600-a697a6c7a3d7",
+              "name": "template",
+              "value": "={{ $('Build Image HTML').all(0, $runIndex)[0].json.template }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6ba0fc7f-997d-461f-861f-05d8dbda4b9b",
+      "name": "Build Final Post",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1136,
+        1248
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "={{ $('Config & Posting Slot').first().json.approvalEmail }}",
+        "subject": "=Approve Instagram post: {{ $json.headline }}",
+        "message": "=Please review this Instagram post.\n\nHEADLINE:\n{{ $json.headline }}\n\nCAPTION:\n{{ $json.caption }}\n\nIMAGE URL:\n{{ $json.imageUrl }}\n\nSTORY SOURCE:\n{{ $json.story_url }}\n\nPosting slot: {{ $('Config & Posting Slot').first().json.postingSlot }}",
+        "responseType": "customForm",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Action",
+              "fieldType": "dropdown",
+              "defaultValue": "Publish",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Publish"
+                  },
+                  {
+                    "option": "Choose another topic"
+                  },
+                  {
+                    "option": "Reject and redo design"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {}
+          },
+          "appendAttribution": false
+        }
+      },
+      "id": "fd28578d-8a5d-4da6-b980-aea1cf70da5c",
+      "name": "Send Approval Email (Gmail)",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1312,
+        1248
+      ],
+      "webhookId": "bbdea125-8d6c-450b-aeb0-ec66d15726a8",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "OcXWvqZdDgtAXSH9",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "19d056ba-37f5-45f1-9b48-6226d469814f",
+      "name": "Stop - Not Approved",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2112,
+        1488
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/{{ $('Config & Posting Slot').first().json.igUserId }}/media",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "image_url",
+              "value": "={{ $('Build Final Post').first().json.imageUrl }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $('Build Final Post').first().json.caption }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('Config & Posting Slot').first().json.igAccessToken }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9eccc6e0-f0c1-40a0-9a29-343c46baf717",
+      "name": "Create Instagram Media Container",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1760,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "id": "8080153b-84d2-4619-a1c5-44277a404992",
+      "name": "Wait for Media Processing",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1952,
+        1072
+      ],
+      "webhookId": "a5556dda-8826-44d4-9ea5-fe121becfcb9"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.instagram.com/v23.0/{{ $('Config & Posting Slot').first().json.igUserId }}/media_publish\n",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $('Create Instagram Media Container').first().json.id }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('Config & Posting Slot').first().json.igAccessToken }}"
+            },
+            {
+              "name": "image_url",
+              "value": "={{ $('Build Final Post').item.json.imageUrl }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6672a4a7-a014-425a-9a8b-3f6a6dab65d9",
+      "name": "Publish to Instagram",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2128,
+        1072
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -48,
+        1568
+      ],
+      "id": "01d6ac6a-e133-4af1-9bb0-ca16b0dc3196",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "wgn6g5vn4OluV6OB",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hcti.io/v1/image",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ html: $json.html, css: $json.css, google_fonts: 'Inter', viewport_width: 1080, viewport_height: 1350 }) }}",
+        "options": {}
+      },
+      "id": "f5449cda-1101-44c0-abf1-5c86023b1ad1",
+      "name": "Create Image (HTML/CSS to Image)1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        976,
+        1248
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "wgn6g5vn4OluV6OB",
+          "name": "Google Gemini(PaLM) Api account 2"
+        },
+        "supabaseApi": {
+          "id": "u4c02ABidwMwBVmB",
+          "name": "Supabase account"
+        },
+        "httpBasicAuth": {
+          "id": "7fpD0ixIkeW7Q46G",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// ===== SETTINGS =====\nconst BRAND = 'WorkWise';\nconst MODE_WEIGHTS = { unsplash: 3, ai: 3, article: 1, text: 3 };  // higher number = appears more often\nconst FORCE_MODE = '';   // testing only: 'unsplash' | 'ai' | 'article' | 'text'\nconst FORCE = '';        // testing only: 'gradient' | 'card' | 'spotlight' | 'list' | 'magazine' | 'takeaway' | 'breaking' | 'versus' | 'bold'\n\n// post data always comes from here, so retries after a rejection still work\nconst d = $('Prepare Post Data').first().json;\n\n// config node (works whether yours is named with or without the 1)\nlet cfg = {};\ntry { cfg = $('Config & Posting Slot1').first().json; }\ncatch (e) { try { cfg = $('Config & Posting Slot').first().json; } catch (e2) {} }\n\n// layouts available for each mode\nconst HAS_BA = !!(d.before && d.after);\nconst PHOTO_LAYOUTS = ['gradient', 'card', 'spotlight', 'magazine', 'breaking', 'takeaway'];\nconst TEXT_LAYOUTS = ['list', 'takeaway', 'bold'].concat(HAS_BA ? ['versus'] : []);\nconst layoutsFor = m => (m === 'text' ? TEXT_LAYOUTS : PHOTO_LAYOUTS);\n\n// layouts already rejected earlier in this same run\nconst used = [];\nfor (let r = 0; r < $runIndex; r++) {\n  try { used.push($('Build Final Post').all(0, r)[0].json.template); } catch (e) {}\n}\nconst left = m => layoutsFor(m).filter(t => !used.includes(t));\n\nconst pickWeighted = w => {\n  let r = Math.random() * Object.values(w).reduce((a, b) => a + b, 0);\n  for (const [k, v] of Object.entries(w)) { if ((r -= v) < 0) return k; }\n  return Object.keys(w)[0];\n};\n\n// choose a mode that still has an unused layout\nlet allowed = {};\nfor (const [m, wt] of Object.entries(MODE_WEIGHTS)) { if (wt > 0 && left(m).length) allowed[m] = wt; }\nif (!Object.keys(allowed).length) {\n  for (const [m, wt] of Object.entries(MODE_WEIGHTS)) { if (wt > 0) allowed[m] = wt; }\n}\nconst MODE = FORCE_MODE || pickWeighted(allowed);\nconst candidates = left(MODE).length ? left(MODE) : layoutsFor(MODE);\nconst name = FORCE || candidates[Math.floor(Math.random() * candidates.length)];\n\nconst esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst points = String(d.pointsText || '').split('\\n').map(s => s.trim()).filter(Boolean);\nconst H = esc(d.headline);\nconst T = esc(d.category || 'AI NEWS').toUpperCase();\nconst SRC = esc(d.source_name);\nconst S1 = esc(points[0] || '');\nconst S2 = esc(points.slice(0, 2).join(' '));\nconst TAKE = esc(d.takeaway || points[0] || '');\nconst BEF = esc(d.before || '');\nconst AFT = esc(d.after || '');\nconst fs = (s, big, mid, small) => { const n = String(s).length; return n <= 45 ? big : n <= 75 ? mid : small; };\n\n// ===== PHOTO SOURCES =====\nconst fromUnsplash = async () => {\n  const key = String(cfg.unsplashKey || '');\n  if (!key || key.startsWith('PASTE')) return null;\n  const r = await this.helpers.httpRequest({\n    method: 'GET',\n    url: 'https://api.unsplash.com/search/photos',\n    qs: { query: d.image_query || d.headline, per_page: 8, content_filter: 'high' },\n    headers: { Authorization: 'Client-ID ' + key, 'Accept-Version': 'v1' },\n    json: true,\n    timeout: 8000\n  });\n  const list = (r && r.results) || [];\n  if (!list.length) return null;\n  const p = list[Math.floor(Math.random() * Math.min(5, list.length))];\n  // Unsplash API rule: ping the download endpoint when a photo is used\n  try {\n    await this.helpers.httpRequest({ method: 'GET', url: p.links.download_location, headers: { Authorization: 'Client-ID ' + key }, timeout: 5000 });\n  } catch (e) {}\n  const raw = p.urls.raw + (p.urls.raw.includes('?') ? '&' : '?') + 'w=1400&q=80&fit=max';\n  return { url: raw, credit: 'Photo: ' + p.user.name + ' / Unsplash' };\n};\n\nconst fromArticle = async () => {\n  if (!d.story_url) return null;\n  const page = String(await this.helpers.httpRequest({\n    method: 'GET', url: d.story_url, timeout: 8000,\n    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36' }\n  }));\n  const m = page.match(/<meta[^>]+property=[\"']og:image[\"'][^>]+content=[\"']([^\"']+)[\"']/i)\n         || page.match(/<meta[^>]+content=[\"']([^\"']+)[\"'][^>]+property=[\"']og:image[\"']/i);\n  if (!m) return null;\n  let u = m[1].replace(/&amp;/g, '&');\n  if (u.startsWith('//')) u = 'https:' + u;\n  return { url: u, credit: '' };\n};\n\nconst fromAI = async () => ({\n  url: 'https://image.pollinations.ai/prompt/' + encodeURIComponent(String(d.image_query || d.headline) + ', modern tech illustration, cinematic lighting') + '?width=1080&height=1080&nologo=true',\n  credit: ''\n});\n\nconst sources = { unsplash: fromUnsplash, article: fromArticle, ai: fromAI };\nlet photo = { url: '', credit: '' };\nif (MODE !== 'text') {\n  const order = [MODE, 'unsplash', 'ai'].filter((v, i, a) => a.indexOf(v) === i);  // chosen mode first, then fallbacks\n  let got = null;\n  for (const s of order) {\n    try { got = await sources[s](); } catch (e) { got = null; }\n    if (got && got.url) break;\n  }\n  photo = got || await fromAI();\n}\nconst img = photo.url;\nconst HAS_PHOTO = MODE !== 'text';\nconst CREDIT = photo.credit\n  ? `<div style=\"position:absolute;right:22px;bottom:18px;background:rgba(0,0,0,.5);color:#fff;font-size:17px;padding:4px 12px;border-radius:8px;font-family:Poppins,sans-serif\">${esc(photo.credit)}</div>`\n  : '';\n\nconst accents = ['#d9f24a', '#ff6b6b', '#ffd166', '#4cc9f0', '#b794f6', '#ff9f43'];\nconst accent = accents[Math.floor(Math.random() * accents.length)];\nconst fonts = '<link href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Playfair+Display:wght@700&display=swap\" rel=\"stylesheet\">';\n\nconst templates = {\n  // 1. photo fading into black (your iPhone 12 reference)\n  gradient: `<div style=\"width:1080px;height:1350px;position:relative;background:#000;font-family:Poppins,sans-serif;color:#fff;overflow:hidden\">\n    <img src=\"${img}\" style=\"position:absolute;top:0;left:0;width:1080px;height:860px;object-fit:cover\">\n    <div style=\"position:absolute;top:420px;left:0;width:1080px;height:930px;background:linear-gradient(to bottom,rgba(0,0,0,0),#000 55%)\"></div>\n    <div style=\"position:absolute;left:70px;right:70px;bottom:80px\">\n      <div style=\"font-size:32px;font-weight:600;letter-spacing:5px;color:${accent}\">${T}</div>\n      <div style=\"font-size:${fs(d.headline, 64, 56, 48)}px;font-weight:800;line-height:1.1;margin:14px 0 28px;text-transform:uppercase\">${H}</div>\n      <div style=\"height:2px;background:#555;margin-bottom:28px\"></div>\n      <div style=\"font-size:38px;line-height:1.4;color:#eee\">${S1}</div>\n    </div>${CREDIT}</div>`,\n\n  // 2. white card on a colour frame (your Facebook reference)\n  card: `<div style=\"width:1080px;height:1350px;position:relative;background:${accent};padding:60px;box-sizing:border-box;font-family:Poppins,sans-serif\">\n    <div style=\"background:#fff;border-radius:36px;height:1230px;padding:60px;box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column\">\n      <div style=\"font-size:${fs(d.headline, 68, 58, 50)}px;font-weight:800;line-height:1.1;color:#111\">${H}</div>\n      <div style=\"font-size:30px;color:#555;margin:26px 0 34px\">By <b>${BRAND}</b> · ${SRC}</div>\n      <img src=\"${img}\" style=\"width:100%;flex:1;min-height:0;object-fit:cover;border-radius:20px;display:block\">\n    </div>${CREDIT}</div>`,\n\n  // 3. Betakit-style spotlight card (your Slate reference)\n  spotlight: `<div style=\"width:1080px;height:1350px;position:relative;background:#0d0d0d;padding:90px 70px;box-sizing:border-box;font-family:Poppins,sans-serif;display:flex;flex-direction:column;justify-content:center\">\n    <div style=\"background:#fff;border-radius:24px;overflow:hidden\">\n      <div style=\"padding:26px;text-align:center;font-size:40px;font-weight:800;color:#111\">${BRAND} <span style=\"font-size:22px;font-weight:600;color:#777\">· ${T}</span></div>\n      <div style=\"background:#000;color:#fff;padding:44px 50px\">\n        <div style=\"font-family:'Playfair Display',Georgia,serif;font-size:${fs(d.headline, 54, 48, 42)}px;font-weight:700;line-height:1.2\">${H}</div>\n        <div style=\"font-size:27px;font-weight:500;line-height:1.5;color:#ccc;margin-top:24px\">${S2}</div>\n      </div>\n      <img src=\"${img}\" style=\"width:100%;height:480px;object-fit:cover;display:block\">\n    </div>${CREDIT}</div>`,\n\n  // 4. numbered list (your \"9 tools\" reference)\n  list: `<div style=\"width:1080px;height:1350px;position:relative;background:#efeee6;padding:80px 70px;box-sizing:border-box;font-family:Poppins,sans-serif;color:#111;display:flex;flex-direction:column;justify-content:center\">\n    <div style=\"text-align:center;font-size:${fs(d.headline, 64, 54, 46)}px;font-weight:800;line-height:1.1\">${H}</div>\n    <div style=\"text-align:center;margin:26px 0 44px\"><span style=\"background:${accent};padding:6px 24px;border-radius:10px;font-size:30px;font-weight:600\">${T}</span></div>\n    ${points.slice(0, 5).map((t, i) => `<div style=\"display:flex;align-items:center;margin-bottom:22px\"><div style=\"width:64px;height:64px;border-radius:50%;background:#111;color:#fff;font-size:30px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-right:24px;flex-shrink:0\">${i + 1}</div><div style=\"font-size:34px;font-weight:600;line-height:1.3\">${esc(t)}</div></div>`).join('')}\n    <div style=\"text-align:center;margin-top:30px;font-size:26px;color:#777\">${BRAND} · Source: ${SRC}</div>\n  </div>`,\n\n  // 5. NEW - full-bleed magazine cover\n  magazine: `<div style=\"width:1080px;height:1350px;position:relative;overflow:hidden;background:#000;font-family:Poppins,sans-serif;color:#fff\">\n    <img src=\"${img}\" style=\"position:absolute;top:0;left:0;width:1080px;height:1350px;object-fit:cover\">\n    <div style=\"position:absolute;top:0;left:0;width:1080px;height:1350px;background:linear-gradient(to bottom,rgba(0,0,0,.45) 0%,rgba(0,0,0,.05) 30%,rgba(0,0,0,.9) 100%)\"></div>\n    <div style=\"position:absolute;left:70px;top:70px;background:${accent};color:#111;font-weight:800;font-size:26px;padding:8px 22px;border-radius:999px;letter-spacing:3px\">${T}</div>\n    <div style=\"position:absolute;right:70px;top:74px;font-size:30px;font-weight:800;letter-spacing:2px\">${BRAND}</div>\n    <div style=\"position:absolute;left:70px;right:70px;bottom:100px\">\n      <div style=\"font-family:'Playfair Display',Georgia,serif;font-size:${fs(d.headline, 84, 72, 60)}px;font-weight:700;line-height:1.08\">${H}</div>\n      <div style=\"width:120px;height:8px;background:${accent};margin:34px 0\"></div>\n      <div style=\"font-size:36px;line-height:1.4;color:#e8e8e8\">${S1}</div>\n    </div>${CREDIT}</div>`,\n\n  // 6. NEW - big \"what this means for you\" statement\n  takeaway: `<div style=\"width:1080px;height:1350px;position:relative;background:${accent};padding:80px;box-sizing:border-box;font-family:Poppins,sans-serif;color:#111;display:flex;flex-direction:column\">\n    <div style=\"display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:30px;letter-spacing:3px\"><span>${BRAND}</span><span style=\"background:#111;color:#fff;padding:8px 22px;border-radius:999px;font-size:24px\">${T}</span></div>\n    <div style=\"flex:1;display:flex;flex-direction:column;justify-content:center\">\n      <div style=\"font-size:28px;font-weight:700;letter-spacing:4px;margin-bottom:30px\">WHAT THIS MEANS FOR YOU</div>\n      <div style=\"font-size:${fs(d.takeaway || points[0] || '', 80, 68, 56)}px;font-weight:800;line-height:1.12\">&ldquo;${TAKE}&rdquo;</div>\n    </div>\n    ${HAS_PHOTO\n      ? `<div style=\"display:flex;align-items:center;gap:28px;background:#111;border-radius:28px;padding:22px;color:#fff\">\n          <img src=\"${img}\" style=\"width:190px;height:190px;object-fit:cover;border-radius:18px;flex-shrink:0\">\n          <div><div style=\"font-size:30px;font-weight:600;line-height:1.3\">${H}</div><div style=\"font-size:22px;opacity:.7;margin-top:8px\">Source: ${SRC}</div></div>\n        </div>`\n      : `<div style=\"background:#111;border-radius:28px;padding:34px;color:#fff\"><div style=\"font-size:34px;font-weight:700;line-height:1.3\">${H}</div><div style=\"font-size:22px;opacity:.7;margin-top:10px\">Source: ${SRC}</div></div>`}\n    ${CREDIT}</div>`,\n\n  // 7. NEW - news-flash style\n  breaking: `<div style=\"width:1080px;height:1350px;position:relative;background:#fff;font-family:Poppins,sans-serif;color:#111;overflow:hidden\">\n    <img src=\"${img}\" style=\"width:1080px;height:760px;object-fit:cover;display:block\">\n    <div style=\"position:absolute;top:50px;left:0;background:#e11d48;color:#fff;font-weight:800;font-size:40px;letter-spacing:4px;padding:14px 40px 14px 70px\">JUST IN</div>\n    <div style=\"position:absolute;top:60px;right:60px;color:#fff;font-weight:800;font-size:30px;text-shadow:0 2px 8px rgba(0,0,0,.6)\">${BRAND}</div>\n    <div style=\"padding:56px 70px\">\n      <div style=\"font-size:${fs(d.headline, 72, 62, 54)}px;font-weight:800;line-height:1.1\">${H}</div>\n      <div style=\"font-size:32px;line-height:1.45;color:#444;margin-top:28px\">${S1}</div>\n    </div>\n    <div style=\"position:absolute;left:0;right:0;bottom:0;height:70px;background:#111;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 70px;font-size:24px;font-weight:600\"><span>${BRAND}</span><span>Source: ${SRC}</span></div>\n    ${CREDIT.replace('bottom:18px', 'bottom:90px')}</div>`,\n\n  // 8. NEW - before / now comparison (your \"2025 vs 2026\" reference)\n  versus: `<div style=\"width:1080px;height:1350px;position:relative;background:#0d0d0d;padding:80px 60px;box-sizing:border-box;font-family:Poppins,sans-serif;color:#fff;display:flex;flex-direction:column\">\n    <div style=\"text-align:center;font-size:26px;letter-spacing:5px;color:${accent};font-weight:700\">${T}</div>\n    <div style=\"text-align:center;font-size:${fs(d.headline, 66, 56, 48)}px;font-weight:800;line-height:1.1;margin:20px 0 50px\">${H}</div>\n    <div style=\"display:flex;gap:24px;flex:1\">\n      <div style=\"flex:1;background:#1c1c1c;border-radius:28px;padding:44px 36px;display:flex;flex-direction:column;justify-content:center\">\n        <div style=\"font-size:30px;font-weight:800;color:#888;letter-spacing:3px;margin-bottom:24px\">BEFORE</div>\n        <div style=\"font-size:42px;font-weight:600;line-height:1.3;color:#bbb\">${BEF}</div>\n      </div>\n      <div style=\"flex:1;background:${accent};color:#111;border-radius:28px;padding:44px 36px;display:flex;flex-direction:column;justify-content:center\">\n        <div style=\"font-size:30px;font-weight:800;letter-spacing:3px;margin-bottom:24px\">NOW</div>\n        <div style=\"font-size:42px;font-weight:700;line-height:1.3\">${AFT}</div>\n      </div>\n    </div>\n    <div style=\"text-align:center;margin-top:36px;font-size:24px;color:#888\">${BRAND} · Source: ${SRC}</div>\n  </div>`,\n\n  // 9. NEW - text-only bold statement\n  bold: `<div style=\"width:1080px;height:1350px;position:relative;background:#111;padding:90px 80px;box-sizing:border-box;font-family:Poppins,sans-serif;color:#fff;display:flex;flex-direction:column;justify-content:center\">\n    <div style=\"font-size:28px;font-weight:700;letter-spacing:5px;color:${accent};margin-bottom:30px\">${T} · ${BRAND}</div>\n    <div style=\"font-size:${fs(d.headline, 92, 78, 64)}px;font-weight:800;line-height:1.05\">${H}</div>\n    <div style=\"width:160px;height:10px;background:${accent};margin:44px 0\"></div>\n    <div style=\"font-size:38px;line-height:1.45;color:#ddd\">${S1}</div>\n    <div style=\"margin-top:60px;font-size:24px;color:#888\">Source: ${SRC}</div>\n  </div>`\n};\n\nreturn { json: { html: fonts + templates[name], css: '', template: name, mode: MODE, photoCredit: photo.credit } };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        1248
+      ],
+      "id": "41b770a9-c3b7-4a1b-895c-aa0e951dd0e4",
+      "name": "Build Image HTML"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "343c8dbb-f020-4ffb-86c0-28071fd57931",
+              "leftValue": "={{ $runIndex }}",
+              "rightValue": 5,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1840,
+        1472
+      ],
+      "id": "fb67c185-135d-4ed4-ac6d-d0292ef8c49f",
+      "name": "Retries left?"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data?.Action ?? '' }}",
+                    "rightValue": "Publish",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e082f3ba-8a85-471e-a285-39f5d8b1d008"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Publish"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "22ac8c16-5c92-4dd2-a457-dada9708339f",
+                    "leftValue": "={{ $json.data?.Action ?? '' }}",
+                    "rightValue": "Choose another topic",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new topic"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "225590d0-40c7-424e-bb40-05f0cc685677",
+                    "leftValue": "={{ $json.data?.Action ?? '' }}",
+                    "rightValue": "Reject and redo design",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "redo"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1488,
+        1216
+      ],
+      "id": "c275608f-ad6b-4e0a-b263-1fabacc9314c",
+      "name": "Choose Action"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8",
+          "mode": "list",
+          "cachedResultName": "Insta Posts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "link": "={{ $('Build Final Post').item.json.story_url }}",
+            "title": "={{ $('Build Final Post').item.json.story_title }}",
+            "publishedAt": "={{ $('Schedule Trigger (9AM & 2PM)').item.json.timestamp }}",
+            "instagramPostId": "={{ $('Create Instagram Media Container').item.json.id }}",
+            "postingSlot": "={{ $('Schedule Trigger (9AM & 2PM)').item.json['Readable time'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "postingSlot",
+              "displayName": "postingSlot",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "publishedAt",
+              "displayName": "publishedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "instagramPostId",
+              "displayName": "instagramPostId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "a1ae9f72-adad-408d-84e0-4f9825b09229",
+      "name": "Log Published Post",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2320,
+        1072
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XNMActrjPXjve9Wt",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// links of every story rejected so far in this execution\nconst rejected = [];\nfor (let r = 0; r <= $runIndex; r++) {\n  try { rejected.push($('Prepare Post Data').all(0, r)[0].json.story_url); } catch (e) {}\n}\n\n// take the full sorted list, drop rejected stories, keep 15\nconst stories = $('Newest First').all().filter(i => !rejected.includes(i.json.link));\nreturn stories.slice(0, 15);"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1808,
+        1232
+      ],
+      "id": "86bb59a0-5f00-4722-b094-282e4fa71b0d",
+      "name": "Remove Rejected Stories"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger (9AM & 2PM)": {
+      "main": [
+        [
+          {
+            "node": "Config & Posting Slot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config & Posting Slot": {
+      "main": [
+        [
+          {
+            "node": "RSS - TechCrunch AI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - The Verge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - MIT Technology Review",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - OpenAI Blog",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS - Google AI Blog",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read Published Posts (Google Sheets)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS - TechCrunch AI": {
+      "main": [
+        [
+          {
+            "node": "Combine All Feeds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS - The Verge": {
+      "main": [
+        [
+          {
+            "node": "Combine All Feeds",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "RSS - MIT Technology Review": {
+      "main": [
+        [
+          {
+            "node": "Combine All Feeds",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "RSS - OpenAI Blog": {
+      "main": [
+        [
+          {
+            "node": "Combine All Feeds",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "RSS - Google AI Blog": {
+      "main": [
+        [
+          {
+            "node": "Combine All Feeds",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Combine All Feeds": {
+      "main": [
+        [
+          {
+            "node": "Only Last 24 Hours",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only Last 24 Hours": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicate Stories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicate Stories": {
+      "main": [
+        [
+          {
+            "node": "Exclude Already Published",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Published Posts (Google Sheets)": {
+      "main": [
+        [
+          {
+            "node": "Exclude Already Published",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Exclude Already Published": {
+      "main": [
+        [
+          {
+            "node": "Newest First",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Newest First": {
+      "main": [
+        [
+          {
+            "node": "Limit to 15 Stories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit to 15 Stories": {
+      "main": [
+        [
+          {
+            "node": "Bundle Stories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bundle Stories": {
+      "main": [
+        [
+          {
+            "node": "AI - Select Story & Write Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI - Select Story & Write Post",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI - Select Story & Write Post": {
+      "main": [
+        [
+          {
+            "node": "Prepare Post Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Post Data": {
+      "main": [
+        [
+          {
+            "node": "Suitable Story Found?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Suitable Story Found?": {
+      "main": [
+        [
+          {
+            "node": "Build Image HTML",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop - No Suitable Story",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Final Post": {
+      "main": [
+        [
+          {
+            "node": "Send Approval Email (Gmail)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Approval Email (Gmail)": {
+      "main": [
+        [
+          {
+            "node": "Choose Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Instagram Media Container": {
+      "main": [
+        [
+          {
+            "node": "Wait for Media Processing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Media Processing": {
+      "main": [
+        [
+          {
+            "node": "Publish to Instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish to Instagram": {
+      "main": [
+        [
+          {
+            "node": "Log Published Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI - Select Story & Write Post",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Image (HTML/CSS to Image)1": {
+      "main": [
+        [
+          {
+            "node": "Build Final Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Image HTML": {
+      "main": [
+        [
+          {
+            "node": "Create Image (HTML/CSS to Image)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retries left?": {
+      "main": [
+        [
+          {
+            "node": "Build Image HTML",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop - Not Approved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Choose Action": {
+      "main": [
+        [
+          {
+            "node": "Create Instagram Media Container",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Remove Rejected Stories",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Retries left?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create Instagram Media Container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Rejected Stories": {
+      "main": [
+        [
+          {
+            "node": "Bundle Stories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Karachi",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "pv5qAzfNXMpRhWt0"
+  },
+  "versionId": "86232ada-c583-46fe-a01d-d5fe70be0e08",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fb06e53b816c28c9f4887db42706cab58b3c6347bac03c79b5e6292650cfeb6a"
+  },
+  "id": "6J0HcmiNoPc8zXi3",
+  "tags": []
+}
