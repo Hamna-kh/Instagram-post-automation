@@ -42,7 +42,11 @@ The project combines workflow automation, a large language model, two image serv
 
 ## System Architecture
 
-![Workflow architecture: 2 decisions, 2 loops](images/architecture.png)
+<div align="center">
+  <img src="docs/images/project_architecture.PNG" alt="project architecture" width="500">
+</div>
+
+Workflow architecture: 2 decisions, 2 loops
 
 The pipeline runs left to right, then back along the second row. **Redo design** re-renders the same story, **another topic** returns to Gemini with the rejected story excluded, and an unsuitable story stops the run.
 
@@ -90,19 +94,28 @@ The pipeline runs left to right, then back along the second row. **Redo design**
 
 ### n8n workflow
 
-![n8n workflow](images/n8n-workflow.png)
+<div align="center">
+  <img src="docs/images/workflow.PNG" alt="workflow" width="500">
+</div>
+
 
 ### Email for approval
 
-<img src="images/approval-email.png" alt="Approval email" width="320">
+<div align="center">
+  <img src="docs/images/review mail.PNG" alt="Approval email" width="320">
+</div>
 
 ### Image attached with approval
+<div align="center">
+  <img src="docs/images/review_image.PNG" alt="Post image attached to the approval email" width="360">
+</div>
 
-<img src="images/approval-image.png" alt="Post image attached to the approval email" width="360">
 
 ### Instagram posts
 
-![Instagram posts](images/instagram-posts.png)
+<div align="center">
+  <img src="docs/images/insta posts.PNG" alt="posts" width="500">
+</div>
 
 ### Instagram page
 
