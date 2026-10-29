@@ -101,11 +101,15 @@ The pipeline runs left to right, then back along the second row. **Redo design**
 
 ### Email for approval
 
-<img src="images/review mail.PNG" alt="Approval email" width="320">
+<div align="center">
+  <img src="docs/images/review mail.PNG" alt="Approval email" width="320">
+</div>
 
 ### Image attached with approval
+<div align="center">
+  <img src="docs/images/review_image.PNG" alt="Post image attached to the approval email" width="360">
+</div>
 
-<img src="images/review image.PNG" alt="Post image attached to the approval email" width="360">
 
 ### Instagram posts
 
