@@ -34,31 +34,31 @@
             {
               "id": "c1000000-0000-4000-8000-000000000002",
               "name": "approvalEmail",
-              "value": "hamnakhalid398@gmail.com",
+              "value": "your-email@example.com",
               "type": "string"
             },
             {
               "id": "c1000000-0000-4000-8000-000000000003",
               "name": "errorEmail",
-              "value": "hamnakhalid398@gmail.com",
+              "value": "your-email@example.com",
               "type": "string"
             },
             {
               "id": "c1000000-0000-4000-8000-000000000004",
               "name": "igUserId",
-              "value": "17841453105793862",
+              "value": "YOUR_INSTAGRAM_USER_ID",
               "type": "string"
             },
             {
               "id": "c1000000-0000-4000-8000-000000000005",
               "name": "igAccessToken",
-              "value": "IGAAaGFuPjyYVBZAFpCbVNQem1uTlNTMTg1RnpBelZA1dmN4NUs2TVhVdTctd3A3aGhYYm5qN0EwaUVtZADRiLUJMczhHeEJCbUwwdmZAkODJtRWI4aTJWWlVJekIwQWtVTFNfSUgtR0NhVnRSb21Qdm5wbWJfN05SNXRqNTUyRWxKRQZDZD",
+              "value": "YOUR_INSTAGRAM_ACCESS_TOKEN",
               "type": "string"
             },
             {
               "id": "eaf35fba-aecb-4564-aab6-07f059db040a",
               "name": "unsplashKey",
-              "value": "aGi9BnE1mGh00ZMCk-mm7u5GgIuDwiWg35nX1hH4hTk",
+              "value": "YOUR_UNSPLASH_ACCESS_KEY",
               "type": "string"
             }
           ]
@@ -214,17 +214,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8",
+          "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Insta Posts",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
         },
         "filtersUI": {
           "values": []
@@ -242,7 +242,7 @@
       "alwaysOutputData": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "XNMActrjPXjve9Wt",
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
           "name": "Google Sheets account"
         }
       }
@@ -599,7 +599,7 @@
       "webhookId": "bbdea125-8d6c-450b-aeb0-ec66d15726a8",
       "credentials": {
         "gmailOAuth2": {
-          "id": "OcXWvqZdDgtAXSH9",
+          "id": "YOUR_GMAIL_CREDENTIAL_ID",
           "name": "Gmail account"
         }
       }
@@ -710,7 +710,7 @@
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "wgn6g5vn4OluV6OB",
+          "id": "YOUR_GEMINI_CREDENTIAL_ID",
           "name": "Google Gemini(PaLM) Api account 2"
         }
       }
@@ -736,15 +736,15 @@
       ],
       "credentials": {
         "googlePalmApi": {
-          "id": "wgn6g5vn4OluV6OB",
+          "id": "YOUR_GEMINI_CREDENTIAL_ID",
           "name": "Google Gemini(PaLM) Api account 2"
         },
         "supabaseApi": {
-          "id": "u4c02ABidwMwBVmB",
+          "id": "YOUR_SUPABASE_CREDENTIAL_ID",
           "name": "Supabase account"
         },
         "httpBasicAuth": {
-          "id": "7fpD0ixIkeW7Q46G",
+          "id": "YOUR_HTTP_BASIC_CREDENTIAL_ID",
           "name": "Unnamed credential"
         }
       }
@@ -895,17 +895,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8",
+          "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Insta Posts",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1faUyORar3t5Hm9skHflazQRm8Q4w6G02CRu5gVpbhc8/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -979,7 +979,7 @@
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "XNMActrjPXjve9Wt",
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
           "name": "Google Sheets account"
         }
       }
@@ -1399,12 +1399,12 @@
     "timezone": "Asia/Karachi",
     "callerPolicy": "workflowsFromSameOwner",
     "availableInMCP": false,
-    "errorWorkflow": "pv5qAzfNXMpRhWt0"
+    "errorWorkflow": "YOUR_ERROR_WORKFLOW_ID"
   },
   "versionId": "86232ada-c583-46fe-a01d-d5fe70be0e08",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "fb06e53b816c28c9f4887db42706cab58b3c6347bac03c79b5e6292650cfeb6a"
+    "instanceId": "0000000000000000000000000000000000000000000000000000000000000000"
   },
   "id": "6J0HcmiNoPc8zXi3",
   "tags": []
